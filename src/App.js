@@ -4,6 +4,7 @@ import Footer from "./Footer";
 import Home from "./Home";
 import "bootstrap/dist/css/bootstrap.min.css"
 import "./App.css"
+import {CalculatorProvider} from "./Model";
 
 function App() {
   return (
@@ -13,7 +14,9 @@ function App() {
 
         {/*app goes in here*/}
         <div className="container pt-2">
-          <Home/>
+          <CalculatorProvider>
+            <Home/>
+          </CalculatorProvider>
         </div>
 
       </div>
