@@ -5,6 +5,7 @@ function Home() {
 
   const {calculator, deleteAll, addNumber, onOperator, addZero,
     onEqual, onDot, onSign, onSquare, onCancel} = useContext(CalculatorContext);
+  const {stringMain, stringSec} = calculator;
 
   function onOperatorClick(event) {
     event.preventDefault();
@@ -54,114 +55,68 @@ function Home() {
     onCancel();
   }
 
+  const info = (height, value)=>{
+    return (
+      <td className="text-right align-middle" style={{"height":height}} colSpan="4">
+        {value}
+      </td>
+    )
+  };
+
+  const button = (id, callback, name, style)=>{
+    return (
+      <td className={"text-center align-middle w-25 p-0 " + style} style={{"height":"4rem"}}>
+        <button className="btn w-100 h-100" id={id} onClick={callback}>{name}</button>
+      </td>
+    )
+  };
+
   return (
     <div className="container">
       <table className="table table-bordered mx-auto mt-2 shadow
                           col-xl-5 col-lg-6 col-md-8 col-sm-11 col-11 mx-auto">
         <tbody>
-        <tr className="">
-          <td className="text-right align-middle" style={{"height":"3rem"}} colSpan="4">
-            {calculator.stringSec}
-          </td>
-        </tr>
         <tr>
-          <td className="text-right align-middle" style={{"height":"4rem"}} colSpan="4">
-            {calculator.stringMain}
-          </td>
+          {info("3rem", stringSec)}
         </tr>
 
         <tr>
-          <td className="text-center align-middle w-25 p-0" style={{"height":"4rem"}}>
-            <button className="btn w-100 h-100" id="add" onClick={onOperatorClick}>+</button>
-          </td>
-
-          <td className="text-center align-middle w-25 p-0" style={{"height":"4rem"}}>
-            <button className="btn w-100 h-100" id="sub" onClick={onOperatorClick}>-</button>
-          </td>
-
-          <td className="text-center align-middle w-25 p-0" style={{"height":"4rem"}}>
-            <button className="btn w-100 h-100" id="mul" onClick={onOperatorClick}>x</button>
-          </td>
-
-          <td className="text-center align-middle w-25 p-0" style={{"height":"4rem"}}>
-            <button className="btn w-100 h-100" id="div" onClick={onOperatorClick}>:</button>
-          </td>
+          {info("4rem", stringMain)}
         </tr>
 
         <tr>
-          <td className="text-center align-middle w-25 p-0" style={{"height":"4rem"}}>
-            <button className="btn w-100 h-100" id="i1" onClick={onNumberClick}>1</button>
-          </td>
-
-          <td className="text-center align-middle w-25 p-0" style={{"height":"4rem"}}>
-            <button className="btn w-100 h-100" id="i2" onClick={onNumberClick}>2</button>
-          </td>
-
-          <td className="text-center align-middle w-25 p-0" style={{"height":"4rem"}}>
-            <button className="btn w-100 h-100" id="i3" onClick={onNumberClick}>3</button>
-          </td>
-
-          <td className="text-center align-middle w-25 p-0" style={{"height":"4rem"}}>
-            <button className="btn w-100 h-100" onClick={onSquareClick}>
-              √
-            </button>
-          </td>
+          {button("add", onOperatorClick, "+", "")}
+          {button("sub", onOperatorClick, "-", "")}
+          {button("mul", onOperatorClick, "x", "")}
+          {button("div", onOperatorClick, ":", "")}
         </tr>
 
         <tr>
-          <td className="text-center align-middle w-25 p-0" style={{"height":"4rem"}}>
-            <button className="btn w-100 h-100" id="i4" onClick={onNumberClick}>4</button>
-          </td>
-
-          <td className="text-center align-middle w-25 p-0" style={{"height":"4rem"}}>
-            <button className="btn w-100 h-100" id="i5" onClick={onNumberClick}>5</button>
-          </td>
-
-          <td className="text-center align-middle w-25 p-0" style={{"height":"4rem"}}>
-            <button className="btn w-100 h-100" id="i6" onClick={onNumberClick}>6</button>
-          </td>
-
-          <td className="text-center align-middle w-25 p-0 bg-danger" style={{"height":"4rem"}}>
-            <button className="btn w-100 h-100" onClick={onDelClick}>
-              DE
-            </button>
-          </td>
+          {button("i1", onNumberClick, "1", "")}
+          {button("i2", onNumberClick, "2", "")}
+          {button("i3", onNumberClick, "3", "")}
+          {button("sqrt", onSquareClick, "√", "")}
         </tr>
 
         <tr>
-          <td className="text-center align-middle w-25 p-0" style={{"height":"4rem"}}>
-            <button className="btn w-100 h-100" id="i7" onClick={onNumberClick}>7</button>
-          </td>
-
-          <td className="text-center align-middle w-25 p-0" style={{"height":"4rem"}}>
-            <button className="btn w-100 h-100" id="i8" onClick={onNumberClick}>8</button>
-          </td>
-
-          <td className="text-center align-middle w-25 p-0" style={{"height":"4rem"}}>
-            <button className="btn w-100 h-100" id="i9" onClick={onNumberClick}>9</button>
-          </td>
-
-          <td className="text-center align-middle w-25 p-0 bg-warning" style={{"height":"4rem"}}>
-            <button className="btn w-100 h-100" onClick={onCancelClick}>CE</button>
-          </td>
+          {button("i4", onNumberClick, "4", "")}
+          {button("i5", onNumberClick, "5", "")}
+          {button("i6", onNumberClick, "6", "")}
+          {button("de", onDelClick, "DE", "bg-danger")}
         </tr>
 
         <tr>
-          <td className="text-center align-middle w-25 p-0" style={{"height":"4rem"}}>
-            <button className="btn w-100 h-100" id="i0" onClick={onZeroClick}>0</button>
-          </td>
+          {button("i7", onNumberClick, "7", "")}
+          {button("i8", onNumberClick, "8", "")}
+          {button("i9", onNumberClick, "9", "")}
+          {button("ce", onCancelClick, "CE", "bg-warning")}
+        </tr>
 
-          <td className="text-center align-middle w-25 p-0" style={{"height":"4rem"}}>
-            <button className="btn w-100 h-100" onClick={onDotClick}>.</button>
-          </td>
-
-          <td className="text-center align-middle w-25 p-0" style={{"height":"4rem"}}>
-            <button className="btn w-100 h-100" onClick={onSignClick}>+/-</button>
-          </td>
-
-          <td className="text-center align-middle w-25 p-0 bg-info" style={{"height":"4rem"}}>
-            <button className="btn w-100 h-100" onClick={onEqualClick}>=</button>
-          </td>
+        <tr>
+          {button("i0", onZeroClick, "0", "")}
+          {button("dot", onDotClick, ".", "")}
+          {button("sign", onSignClick, "+/-", "")}
+          {button("equal", onEqualClick, "=", "bg-info")}
         </tr>
 
         </tbody>
