@@ -7,7 +7,8 @@ function Home() {
 
   function onOperatorClick(event) {
     event.preventDefault();
-    setCalculator(old=>onOperator(old));
+    const id = event.target.id;
+    setCalculator(old=>onOperator(old, id));
   }
 
   function onEqualClick(event) {
@@ -49,15 +50,15 @@ function Home() {
           </td>
 
           <td className="text-center align-middle w-25 p-0" style={{"height":"4rem"}}>
-            <button className="btn w-100 h-100">-</button>
+            <button className="btn w-100 h-100" id="sub" onClick={onOperatorClick}>-</button>
           </td>
 
           <td className="text-center align-middle w-25 p-0" style={{"height":"4rem"}}>
-            <button className="btn w-100 h-100">x</button>
+            <button className="btn w-100 h-100" id="mul" onClick={onOperatorClick}>x</button>
           </td>
 
           <td className="text-center align-middle w-25 p-0" style={{"height":"4rem"}}>
-            <button className="btn w-100 h-100">:</button>
+            <button className="btn w-100 h-100" id="div" onClick={onOperatorClick}>:</button>
           </td>
         </tr>
 
