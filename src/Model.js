@@ -176,6 +176,10 @@ export const CalculatorProvider = ({children})=>{
         operator:operator,
         state:state
       });
+    }else if (state === states.ope){
+      operator = getOperator(id) ;
+      stringSec = stringSec.substring(0, stringSec.length - 3) + getStringOperator(id);
+      setCalculator({...calculator, operator: operator, stringSec: stringSec});
     }
   };
 
