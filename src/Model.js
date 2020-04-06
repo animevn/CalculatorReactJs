@@ -95,21 +95,47 @@ export const CalculatorProvider = ({children})=>{
     })
   };
 
+  const addZero = ()=>{
+    let {stringMain, state} = calculator;
+    if (state === states.error || state === states.equal){
+      setCalculator({
+        stringMain:"0",
+        stringSec:"",
+        operand1:null,
+        operand2:null,
+        operator:null,
+        state:states.op1,
+        result:""
+      })
+    }else {
+      if ((stringMain.length > 0 && stringMain !== "0" && isOK(stringMain))
+        || stringMain.length === 0){
+        stringMain = stringMain + 0;
+        if (state === states.ope) state = states.op2;
+        setCalculator({...calculator, stringMain:stringMain, state:state});
+      }
+    }
+  };
+
   const addNumber = (value)=>{
     let {stringMain, state} = calculator;
-    if (isOK(stringMain)){
-      if (state === states.error || state === states.equal){
-        setCalculator({
-          stringMain:value,
-          stringSec:"",
-          operand1:null,
-          operand2:null,
-          operator:null,
-          state:states.op1,
-          result:""
-        })
-      }else {
-        stringMain = stringMain + value;
+    if (state === states.error || state === states.equal){
+      setCalculator({
+        stringMain:value,
+        stringSec:"",
+        operand1:null,
+        operand2:null,
+        operator:null,
+        state:states.op1,
+        result:""
+      })
+    }else {
+      if (isOK(stringMain)){
+        if (stringMain === "0"){
+          stringMain = value;
+        }else {
+          stringMain = stringMain + value;
+        }
         if (state === states.ope) state = states.op2;
         setCalculator({...calculator, stringMain:stringMain, state:state});
       }
@@ -117,17 +143,31 @@ export const CalculatorProvider = ({children})=>{
   };
 
   const onOperator = (id)=>{
-    let {stringMain, stringSec, operand1, operator, state, result} = calculator;
+    let {stringMain, stringSec, operand1, operand2, operator, state, result} = calculator;
     if (isReady(stringMain)){
       if (state === states.op1 && stringMain.length > 0){
         operand1 = Number(stringMain);
+        stringSec = stringMain + getStringOperator(id);
       }else if (state === states.equal){
         operand1 = Number(result);
+        stringSec = stringMain + getStringOperator(id);
+      }else if (state === states.op2){
+        operand2 = Number(stringMain);
+        result = calculateOperator(operator, operand1, operand2);
+        if (result === "Error"){
+          stringSec = result;
+        }else {
+          operand1 = result;
+          stringSec = result + getStringOperator(id);
+        }
       }
-      stringSec = stringMain + getStringOperator(id);
       operator = getOperator(id);
       stringMain = "";
-      state = states.ope;
+      if (result === "Error"){
+        state = states.error;
+      }else {
+        state = states.ope;
+      }
       setCalculator({
         ...calculator,
         stringMain:stringMain,
@@ -167,20 +207,26 @@ export const CalculatorProvider = ({children})=>{
   };
 
   const onDot = ()=>{
-    let {stringMain} = calculator;
-    if (stringMain === "" || stringMain === "0"){
+    let {stringMain, stringSec, state} = calculator;
+    if (state === states.equal || state === states.error){
+      state = states.op1;
       stringMain = "0.";
+      stringSec = "";
     }else {
-      if (stringMain.indexOf(".") === -1){
-        stringMain = stringMain + ".";
+      if (stringMain === "" || stringMain === "0"){
+        stringMain = "0.";
+      }else {
+        if (stringMain.indexOf(".") === -1){
+          stringMain = stringMain + ".";
+        }
       }
     }
-    setCalculator({...calculator, stringMain: stringMain});
+    setCalculator({...calculator, stringMain: stringMain, state:state, stringSec: stringSec});
   };
 
   return (
     <CalculatorContext.Provider value={{calculator, setCalculator,
-      deleteAll, addNumber, onOperator, onEqual, onDot}}>
+      deleteAll, addNumber, addZero, onOperator, onEqual, onDot}}>
       {children}
     </CalculatorContext.Provider>
   )

@@ -3,7 +3,7 @@ import {CalculatorContext} from "./Model";
 
 function Home() {
 
-  const {calculator, deleteAll, addNumber, onOperator,
+  const {calculator, deleteAll, addNumber, onOperator, addZero,
     onEqual, onDot} = useContext(CalculatorContext);
 
   function onOperatorClick(event) {
@@ -20,6 +20,11 @@ function Home() {
   function onDelClick(event) {
     event.preventDefault();
     deleteAll();
+  }
+
+  function onZeroClick(event) {
+    event.preventDefault();
+    addZero();
   }
 
   function onNumberClick(event) {
@@ -129,7 +134,7 @@ function Home() {
 
         <tr>
           <td className="text-center align-middle w-25 p-0" style={{"height":"4rem"}}>
-            <button className="btn w-100 h-100" id="i0" onClick={onNumberClick}>0</button>
+            <button className="btn w-100 h-100" id="i0" onClick={onZeroClick}>0</button>
           </td>
 
           <td className="text-center align-middle w-25 p-0" style={{"height":"4rem"}}>
