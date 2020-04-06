@@ -108,7 +108,7 @@ export const CalculatorProvider = ({children})=>{
         result:""
       })
     }else {
-      if ((stringMain.length > 0 && stringMain !== "0" && isOK(stringMain))
+      if ((stringMain.length > 0 && stringMain !== "0" && stringMain !== "-0" && isOK(stringMain))
         || stringMain.length === 0){
         stringMain = stringMain + 0;
         if (state === states.ope) state = states.op2;
@@ -133,6 +133,8 @@ export const CalculatorProvider = ({children})=>{
       if (isOK(stringMain)){
         if (stringMain === "0"){
           stringMain = value;
+        }else if (stringMain === "-0"){
+          stringMain = "-" + value;
         }else {
           stringMain = stringMain + value;
         }
@@ -219,6 +221,8 @@ export const CalculatorProvider = ({children})=>{
     }else {
       if (stringMain === "" || stringMain === "0"){
         stringMain = "0.";
+      }else if (stringMain === "-"){
+        stringMain = "-0.";
       }else {
         if (stringMain.indexOf(".") === -1){
           stringMain = stringMain + ".";
@@ -228,9 +232,24 @@ export const CalculatorProvider = ({children})=>{
     setCalculator({...calculator, stringMain: stringMain, state:state, stringSec: stringSec});
   };
 
+  const onSign = ()=>{
+    let {stringMain, state} = calculator;
+    if (state === states.equal || state === states.error){
+      stringMain = "-";
+      state = states.op1;
+    }else if (state === states.op1 || state === states.ope){
+      if (stringMain.length === 0){
+        stringMain = "-";
+      }else if (stringMain === "-"){
+        stringMain = "";
+      }
+    }
+    setCalculator({...calculator, stringMain: stringMain, state: state});
+  };
+
   return (
     <CalculatorContext.Provider value={{calculator, setCalculator,
-      deleteAll, addNumber, addZero, onOperator, onEqual, onDot}}>
+      deleteAll, addNumber, addZero, onOperator, onEqual, onDot, onSign}}>
       {children}
     </CalculatorContext.Provider>
   )
