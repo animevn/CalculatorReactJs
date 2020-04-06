@@ -1,36 +1,36 @@
 import React, {useContext} from "react";
-import {addNumber, CalculatorContext, deleteAll, onEqual, onOperator} from "./Model";
+import {CalculatorContext} from "./Model";
 
 function Home() {
 
-  const {calculator, setCalculator} = useContext(CalculatorContext);
+  const {calculator, deleteAll, addNumber, onOperator, onEqual} = useContext(CalculatorContext);
 
   function onOperatorClick(event) {
     event.preventDefault();
     const id = event.target.id;
-    setCalculator(old=>onOperator(old, id));
+    onOperator(id);
   }
 
   function onEqualClick(event) {
     event.preventDefault();
-    setCalculator(old=>onEqual(old));
+    onEqual();
   }
 
   function onDelClick(event) {
     event.preventDefault();
-    setCalculator(deleteAll());
+    deleteAll();
   }
 
   function onNumberClick(event) {
     event.preventDefault();
     const id = event.target.id;
     const value = id.substring(1, 2);
-    setCalculator(old=>addNumber(old, value));
+    addNumber(value);
   }
 
   return (
     <div className="container">
-      <table className="table table-bordered mx-auto mt-3 shadow
+      <table className="table table-bordered mx-auto mt-2 shadow
                           col-xl-5 col-lg-6 col-md-8 col-sm-11 col-11 mx-auto">
         <tbody>
         <tr className="">
