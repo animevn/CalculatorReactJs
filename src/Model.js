@@ -69,7 +69,7 @@ export const CalculatorContext = createContext(null);
 
 export const CalculatorProvider = ({children})=>{
   const save = localStorage.getItem("save");
-  const [calculator, setCalculator] = useState(save? JSON.parse(save) : initialCalculator);
+  const [calculator, setCalculator] = useState(save ? JSON.parse(save) : initialCalculator);
 
   useEffect(()=>{
     localStorage.setItem("save", JSON.stringify(calculator));
@@ -89,28 +89,44 @@ export const CalculatorProvider = ({children})=>{
 
   const addNumber = (value)=>{
     let {stringMain, state} = calculator;
-    stringMain = stringMain + value;
-    if (state === states.ope) state = states.op2;
-    setCalculator({...calculator, stringMain:stringMain, state:state});
+    if (state === states.error || state === states.equal){
+      setCalculator({
+        stringMain:value,
+        stringSec:"",
+        operand1:null,
+        operand2:null,
+        operator:null,
+        state:states.op1,
+        result:""
+      })
+    }else {
+      stringMain = stringMain + value;
+      if (state === states.ope) state = states.op2;
+      setCalculator({...calculator, stringMain:stringMain, state:state});
+    }
   };
 
   const onOperator = (id)=>{
-    let {stringMain, stringSec, operand1, operator, state} = calculator;
-    if (state === states.op1 && stringMain.length > 0){
-      operand1 = Number(stringMain);
+    let {stringMain, stringSec, operand1, operator, state, result} = calculator;
+    if (stringMain.length > 0){
+      if (state === states.op1 && stringMain.length > 0){
+        operand1 = Number(stringMain);
+      }else if (state === states.equal){
+        operand1 = Number(result);
+      }
       stringSec = stringMain + getStringOperator(id);
       operator = getOperator(id);
       stringMain = "";
       state = states.ope;
+      setCalculator({
+        ...calculator,
+        stringMain:stringMain,
+        stringSec:stringSec,
+        operand1:operand1,
+        operator:operator,
+        state:state
+      });
     }
-    setCalculator({
-      ...calculator,
-      stringMain:stringMain,
-      stringSec:stringSec,
-      operand1:operand1,
-      operator:operator,
-      state:state
-    });
   };
 
   const onEqual = ()=>{
