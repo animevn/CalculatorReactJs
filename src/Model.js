@@ -65,6 +65,14 @@ const calculateOperator = (operator, operand1, operand2)=>{
   }
 };
 
+const isOK = (value)=>{
+  return value.length < 10;
+};
+
+const isReady = (value)=>{
+  return value.length > 0;
+};
+
 export const CalculatorContext = createContext(null);
 
 export const CalculatorProvider = ({children})=>{
@@ -89,26 +97,28 @@ export const CalculatorProvider = ({children})=>{
 
   const addNumber = (value)=>{
     let {stringMain, state} = calculator;
-    if (state === states.error || state === states.equal){
-      setCalculator({
-        stringMain:value,
-        stringSec:"",
-        operand1:null,
-        operand2:null,
-        operator:null,
-        state:states.op1,
-        result:""
-      })
-    }else {
-      stringMain = stringMain + value;
-      if (state === states.ope) state = states.op2;
-      setCalculator({...calculator, stringMain:stringMain, state:state});
+    if (isOK(stringMain)){
+      if (state === states.error || state === states.equal){
+        setCalculator({
+          stringMain:value,
+          stringSec:"",
+          operand1:null,
+          operand2:null,
+          operator:null,
+          state:states.op1,
+          result:""
+        })
+      }else {
+        stringMain = stringMain + value;
+        if (state === states.ope) state = states.op2;
+        setCalculator({...calculator, stringMain:stringMain, state:state});
+      }
     }
   };
 
   const onOperator = (id)=>{
     let {stringMain, stringSec, operand1, operator, state, result} = calculator;
-    if (stringMain.length > 0){
+    if (isReady(stringMain)){
       if (state === states.op1 && stringMain.length > 0){
         operand1 = Number(stringMain);
       }else if (state === states.equal){
