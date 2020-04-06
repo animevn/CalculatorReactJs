@@ -166,11 +166,21 @@ export const CalculatorProvider = ({children})=>{
     });
   };
 
-
+  const onDot = ()=>{
+    let {stringMain} = calculator;
+    if (stringMain === "" || stringMain === "0"){
+      stringMain = "0.";
+    }else {
+      if (stringMain.indexOf(".") === -1){
+        stringMain = stringMain + ".";
+      }
+    }
+    setCalculator({...calculator, stringMain: stringMain});
+  };
 
   return (
     <CalculatorContext.Provider value={{calculator, setCalculator,
-      deleteAll, addNumber, onOperator, onEqual}}>
+      deleteAll, addNumber, onOperator, onEqual, onDot}}>
       {children}
     </CalculatorContext.Provider>
   )
