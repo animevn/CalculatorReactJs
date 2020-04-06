@@ -95,6 +95,29 @@ export const CalculatorProvider = ({children})=>{
     })
   };
 
+  const onCancel = ()=>{
+    let {stringMain, stringSec, state, operand1} = calculator;
+    if (state === states.equal || state === states.error){
+      setCalculator({
+        stringMain:"",
+        stringSec:"",
+        operand1:null,
+        operand2:null,
+        operator:null,
+        state:states.op1,
+        result:""
+      });
+    }else if (state === states.ope){
+      state = states.op1;
+      stringSec = stringSec.substring(0, stringSec.length - 3);
+      stringMain = "" + operand1;
+      setCalculator({...calculator, state: state, stringMain: stringMain, stringSec: stringSec});
+    }else {
+      stringMain = stringMain.substring(0, stringMain.length - 1);
+      setCalculator({...calculator, stringMain: stringMain});
+    }
+  };
+
   const addZero = ()=>{
     let {stringMain, state} = calculator;
     if (state === states.error || state === states.equal){
@@ -270,7 +293,7 @@ export const CalculatorProvider = ({children})=>{
   };
 
   return (
-    <CalculatorContext.Provider value={{calculator, setCalculator,
+    <CalculatorContext.Provider value={{calculator, setCalculator, onCancel,
       deleteAll, addNumber, addZero, onOperator, onEqual, onDot, onSign, onSquare}}>
       {children}
     </CalculatorContext.Provider>
