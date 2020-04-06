@@ -247,9 +247,31 @@ export const CalculatorProvider = ({children})=>{
     setCalculator({...calculator, stringMain: stringMain, state: state});
   };
 
+  const onSquare = ()=>{
+    let {stringMain, state, operand1, operand2} = calculator;
+    const number = Number(stringMain);
+    if (number > 0){
+      const sqrt = Math.sqrt(number);
+      if (state === states.equal || state === states.op1){
+        operand1 = sqrt;
+        stringMain = "" + sqrt;
+        state = states.op1;
+      }else if (state === states.op2){
+        operand2 = sqrt;
+        stringMain = "" + sqrt;
+      }
+      setCalculator({
+        ...calculator,
+        stringMain: stringMain,
+        state: state,
+        operand1: operand1,
+        operand2: operand2})
+    }
+  };
+
   return (
     <CalculatorContext.Provider value={{calculator, setCalculator,
-      deleteAll, addNumber, addZero, onOperator, onEqual, onDot, onSign}}>
+      deleteAll, addNumber, addZero, onOperator, onEqual, onDot, onSign, onSquare}}>
       {children}
     </CalculatorContext.Provider>
   )

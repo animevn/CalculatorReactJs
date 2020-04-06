@@ -4,7 +4,7 @@ import {CalculatorContext} from "./Model";
 function Home() {
 
   const {calculator, deleteAll, addNumber, onOperator, addZero,
-    onEqual, onDot, onSign} = useContext(CalculatorContext);
+    onEqual, onDot, onSign, onSquare} = useContext(CalculatorContext);
 
   function onOperatorClick(event) {
     event.preventDefault();
@@ -42,6 +42,11 @@ function Home() {
   function onSignClick(event) {
     event.preventDefault();
     onSign();
+  }
+
+  function onSquareClick(event) {
+    event.preventDefault();
+    onSquare();
   }
 
   return (
@@ -92,7 +97,7 @@ function Home() {
           </td>
 
           <td className="text-center align-middle w-25 p-0" style={{"height":"4rem"}}>
-            <button className="btn w-100 h-100">
+            <button className="btn w-100 h-100" onClick={onSquareClick}>
               √
             </button>
           </td>
