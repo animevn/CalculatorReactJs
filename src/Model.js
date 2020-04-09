@@ -76,11 +76,11 @@ const isReady = (value)=>{
 export const CalculatorContext = createContext(null);
 
 export const CalculatorProvider = ({children})=>{
-  const save = localStorage.getItem("save");
+  const save = localStorage.getItem("calsave");
   const [calculator, setCalculator] = useState(save ? JSON.parse(save) : initialCalculator);
 
   useEffect(()=>{
-    localStorage.setItem("save", JSON.stringify(calculator));
+    localStorage.setItem("calsave", JSON.stringify(calculator));
   }, [calculator]);
 
   const deleteAll = ()=>{
