@@ -56,12 +56,13 @@ function Home() {
   const info = (height, value)=>{
     return (
       <td style={{"height":height, "border":"1px solid lightgray"}} colSpan="4">
-        <Typography component="div">
-          <Box textAlign="right" mx={2} >
-            {value}
-          </Box>
-        </Typography>
-
+        <Box>
+          <Typography component="div">
+            <Box textAlign="right" mx={2} >
+              {value}
+            </Box>
+          </Typography>
+        </Box>
       </td>
     )
   };
@@ -69,7 +70,7 @@ function Home() {
   const button = (id, callback, name)=>{
     return (
       <td style={{"height":"4rem", "border":"1px solid lightgray"}}>
-        <Button id={id} onClick={callback} style={{"width":"100%", "height":"100%"}}>
+        <Button id={id} onClick={callback} style={{"width":"100%", "height":"inherit"}}>
           {name}
         </Button>
       </td>
@@ -77,11 +78,12 @@ function Home() {
   };
 
   return (
-    <Grid container direction="row" justify="center">
-      <Box display="flex" flexDirection="column" justifyContent="center"
-           style={{"overflow":"hidden"}}
-           width={width} bgcolor="white" borderRadius={10} boxShadow={3} mt={padTop} >
-        <table style={{"borderCollapse":"collapse"}}>
+    <Grid container direction="row" justify="center" alignItems="center">
+      <Box mt={padTop} borderRadius={5} boxShadow={3} bgcolor="white" mx={2} mb={10}
+           display="flex" flexDirection="column" alignContent="stretch"
+           style={{"overflow":"hidden"}} width={width}
+      >
+        <table style={{"borderCollapse":"collapse", "width":"100%"}}>
           <tbody>
           <tr>
             {info("3rem", stringSec)}
